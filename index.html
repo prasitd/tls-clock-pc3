@@ -22,30 +22,33 @@
             align-items: center;
             min-height: 100vh;
             font-family: 'Roboto', sans-serif;
+            overflow: hidden;
         }
 
-        /* ขนาดกรอบเดิม 820 x 380 px */
+        /* กรอบตัวเรือน 820 x 380 px ชิดกระชับ */
         .clock-body {
             width: 820px;
             height: 380px;
             background: #020202;
             border: 4px solid #1a1a1a;
             border-radius: 12px;
-            padding: 12px 18px 10px 18px;
+            padding: 16px 20px;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.95),
                         inset 0 0 10px rgba(255, 255, 255, 0.04);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: center; /* ยึดแกนกลางเพื่อดึงเวลากับวันมาชิดกัน */
+            gap: 10px;               /* กำหนดช่องว่างระหว่างเวลากับวันที่ให้แคบลงตามต้องการ */
             position: relative;
+            overflow: hidden;        /* ลบปัญหากรอบเลื่อน Scrollbar */
         }
 
-        /* --- แถบแสดงเวลาหลัก (ขยายใหญ่เต็มกรอบ) --- */
+        /* --- แถบแสดงเวลาหลัก --- */
         .time-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 240px;
+            height: 230px;
             gap: 10px;
         }
 
@@ -63,7 +66,7 @@
 
         .time-digit {
             font-family: 'Digital-7 Mono', 'Orbitron', monospace;
-            font-size: 185px;          /* ปรับเพิ่มขนาดตัวเลขเวลา */
+            font-size: 170px;
             font-weight: 900;
             color: #00b4ff;
             text-shadow: 0 0 15px rgba(0, 180, 255, 0.85),
@@ -78,13 +81,13 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 36px;
+            gap: 34px;
             padding: 0 2px;
         }
 
         .colon-dot {
-            width: 15px;
-            height: 15px;
+            width: 14px;
+            height: 14px;
             background-color: #00b4ff;
             border-radius: 2px;
             box-shadow: 0 0 10px #00b4ff, 0 0 20px #00b4ff;
@@ -96,7 +99,7 @@
             align-items: flex-start;
             justify-content: flex-start;
             gap: 24px;
-            height: 102px;
+            height: 98px;
         }
 
         .date-section {
@@ -112,52 +115,54 @@
 
         .date-box {
             background: #101418;
-            height: 85px;              /* ขยายความสูงกล่องวันที่ */
+            height: 72px;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 0 10px;
             border-radius: 4px;
-            min-width: 70px;           /* ขยายความกว้างกล่องวันที่ */
+            min-width: 68px;
             box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.9);
         }
 
         .date-box.year {
-            min-width: 140px;          /* ขยายกล่องปี */
+            min-width: 140px;
         }
 
         .date-digit {
             font-family: 'Digital-7 Mono', 'Orbitron', monospace;
-            font-size: 85px;           /* ปรับเพิ่มขนาดตัวเลขวันที่ */
+            font-size: 58px;
             font-weight: 700;
             color: #00b4ff;
             text-shadow: 0 0 10px rgba(0, 180, 255, 0.7);
             transform: skewX(-5deg);
             display: inline-block;
+            line-height: 1;
         }
 
         .label {
             color: #d1d5db;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 800;
             margin-top: 5px;
             letter-spacing: 1px;
             font-family: 'Roboto', sans-serif;
         }
 
-        /* แถบวัน SUN - SAT (ขยายใหญ่ขึ้น) */
+        /* แถบวัน SUN - SAT พอดีพื้นที่ ไม่ล้นตกขอบ */
         .days-container {
             display: flex;
             align-items: center;
-            gap: 14px;
-            height: 70px;              /* ให้แนวแกนกลางตรงกับกล่องวันที่ */
+            gap: 12px;
+            height: 72px;
         }
 
         .day {
-            font-size: 35px;           /* ปรับเพิ่มขนาดตัวหนังสือชื่อวัน */
+            font-size: 20px;
             font-weight: 900;
-            color: #1f2c38;            /* สีหลอดไฟขณะดับ (มองเห็นรูปคำชัดเจนขึ้น) */
+            color: #1a242f; /* สีตอนยังไม่ติดไฟ */
             letter-spacing: 1px;
+            white-space: nowrap;
         }
 
         .day.active {
