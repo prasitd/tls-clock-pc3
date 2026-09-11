@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Wall Clock (OK-4822 Style)</title>
-    <link href="https://fonts.cdnfonts.com/css/vt323" rel="stylesheet">
+    <!-- ฟอนต์ตัวเลขดิจิทัล 7-Segment และ Orbitron -->
+    <link href="https://fonts.cdnfonts.com/css/digital-7-mono" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Roboto:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Roboto:wght@700;900&display=swap');
 
         * {
             margin: 0;
@@ -15,7 +16,7 @@
         }
 
         body {
-            background-color: #121212;
+            background-color: #0d0d0d;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -23,81 +24,85 @@
             font-family: 'Roboto', sans-serif;
         }
 
-        /* ปรับความกว้างและความสูงของตัวเรือนให้กระชับขึ้น */
+        /* ตัวเรือนนาฬิกา - ทรงสี่เหลี่ยมผืนผ้าแนวนอน ขอบชิด */
         .clock-body {
-            width: 700px;              /* เดิม 780px ลดให้ช่องแคบลง */
-            height: 350px;             /* เดิม 420px ลดระยะห่างแนวตั้ง */
-            background: #000000;
-            border: 4px solid #222;
+            width: 820px;
+            height: 380px;
+            background: #020202;
+            border: 4px solid #1a1a1a;
             border-radius: 12px;
-            padding: 20px 24px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9),
-                        inset 0 0 10px rgba(255, 255, 255, 0.05);
+            padding: 16px 20px 14px 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.95),
+                        inset 0 0 10px rgba(255, 255, 255, 0.04);
             display: flex;
             flex-direction: column;
-            justify-content: center;    /* เปลี่ยนให้ยึดตรงกลางเพื่อคุม gap */
-            gap: 16px;                 /* คุมระยะห่างระหว่างแถวเวลากับแถววันโดยตรง */
+            justify-content: space-between;
             position: relative;
         }
 
-        /* --- ส่วนเวลาหลัก --- */
+        /* --- แถบแสดงเวลาหลัก --- */
         .time-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 190px;             /* เดิม 240px */
-            gap: 8px;                  /* เดิม 12px ช่องระหว่างกล่องเวลาแคบลง */
+            height: 245px;
+            gap: 10px;
         }
 
         .time-box {
-            background: #111417;
+            background: #101418;
             flex: 1;
             height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
             border-radius: 4px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+            box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.9);
+            overflow: hidden;
         }
 
         .time-digit {
-            font-family: 'Orbitron', monospace;
-            font-size: 100px;          /* ปรับฟอนต์ให้สมส่วนกับกล่องที่แคบลง */
+            font-family: 'Digital-7 Mono', 'Orbitron', monospace;
+            font-size: 160px;
             font-weight: 900;
-            color: #00aeff;
-            text-shadow: 0 0 12px rgba(0, 174, 255, 0.7),
-                         0 0 25px rgba(0, 174, 255, 0.4);
+            color: #00b4ff;
+            text-shadow: 0 0 14px rgba(0, 180, 255, 0.85),
+                         0 0 30px rgba(0, 180, 255, 0.5);
             letter-spacing: 2px;
+            line-height: 1;
+            transform: skewX(-6deg); /* เอียงตัวเลขให้เหมือนหน้าปัด LED ของจริง */
+            display: inline-block;
         }
 
+        /* จุดโคลอนกระพริบ */
         .colon-box {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 24px;
-            padding: 0 4px;
+            gap: 34px;
+            padding: 0 2px;
         }
 
         .colon-dot {
-            width: 12px;
-            height: 12px;
-            background-color: #00aeff;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #00aeff, 0 0 20px #00aeff;
+            width: 14px;
+            height: 14px;
+            background-color: #00b4ff;
+            border-radius: 2px;
+            box-shadow: 0 0 10px #00b4ff, 0 0 20px #00b4ff;
         }
 
-        /* --- ส่วนแถบด้านล่าง --- */
+        /* --- แถบด้านล่าง (วันที่ + วันในสัปดาห์) --- */
         .bottom-container {
             display: flex;
-            align-items: flex-end;
+            align-items: flex-start;
             justify-content: flex-start;
-            gap: 20px;
-            height: 85px;              /* เดิม 110px */
+            gap: 28px;
+            height: 90px;
         }
 
         .date-section {
             display: flex;
-            gap: 8px;                  /* เดิม 12px ช่องไฟระหว่าง วัน/เดือน/ปี แคบลง */
+            gap: 8px;
         }
 
         .date-field {
@@ -107,100 +112,112 @@
         }
 
         .date-box {
-            background: #111417;
-            height: 52px;              /* เดิม 65px */
+            background: #101418;
+            height: 62px;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 0 8px;
+            padding: 0 10px;
             border-radius: 4px;
-            min-width: 52px;           /* เดิม 65px ช่องวันและเดือนแคบลง */
-            box-shadow: inset 0 0 8px rgba(0,0,0,0.8);
+            min-width: 62px;
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.9);
         }
 
         .date-box.year {
-            min-width: 90px;           /* เดิม 110px ช่องปีแคบลง */
+            min-width: 125px;
         }
 
         .date-digit {
-            font-family: 'Orbitron', monospace;
-            font-size: 30px;           /* เดิม 38px */
+            font-family: 'Digital-7 Mono', 'Orbitron', monospace;
+            font-size: 44px;
             font-weight: 700;
-            color: #00aeff;
-            text-shadow: 0 0 8px rgba(0, 174, 255, 0.6);
+            color: #00b4ff;
+            text-shadow: 0 0 10px rgba(0, 180, 255, 0.7);
+            transform: skewX(-5deg);
+            display: inline-block;
         }
 
         .label {
-            color: #ffffff;
-            font-size: 14px;           /* เดิม 18px */
-            font-weight: 700;
-            margin-top: 6px;
+            color: #d1d5db;
+            font-size: 13px;
+            font-weight: 800;
+            margin-top: 5px;
             letter-spacing: 1px;
+            font-family: 'Roboto', sans-serif;
         }
 
-        /* ส่วนแสดงวัน SUN - SAT */
+        /* รายชื่อวันในสัปดาห์ SUN - SAT */
         .days-container {
             display: flex;
-            gap: 12px;
-            margin-left: 15px;
-            margin-bottom: 26px;
+            align-items: center;
+            gap: 16px;
+            height: 62px;
         }
 
         .day {
-            font-size: 15px;
-            font-weight: 700;
-            color: #222d38;
+            font-size: 16px;
+            font-weight: 800;
+            color: #1a232b; /* สียังไม่เปิดไฟ */
             letter-spacing: 1px;
         }
 
         .day.active {
-            color: #00aeff;
-            text-shadow: 0 0 10px rgba(0, 174, 255, 0.8);
+            color: #00b4ff; /* สีวันปัจจุบัน */
+            text-shadow: 0 0 10px rgba(0, 180, 255, 0.9),
+                         0 0 20px rgba(0, 180, 255, 0.5);
         }
 
+        /* โค้ดรุ่นมุมขวาล่าง */
         .model-number {
             position: absolute;
-            bottom: 10px;
-            right: 18px;
-            color: #555;
+            bottom: 8px;
+            right: 16px;
+            color: #444;
             font-size: 10px;
-            font-weight: bold;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
     </style>
 </head>
 <body>
 
     <div class="clock-body">
+        <!-- แสดงเวลาหลัก -->
         <div class="time-container">
-            <div class="time-box"><span class="time-digit" id="hours">00</span></div>
+            <div class="time-box"><span class="time-digit" id="hours">10</span></div>
             <div class="colon-box">
                 <div class="colon-dot"></div>
                 <div class="colon-dot"></div>
             </div>
-            <div class="time-box"><span class="time-digit" id="minutes">00</span></div>
+            <div class="time-box"><span class="time-digit" id="minutes">58</span></div>
             <div class="colon-box">
                 <div class="colon-dot"></div>
                 <div class="colon-dot"></div>
             </div>
-            <div class="time-box"><span class="time-digit" id="seconds">00</span></div>
+            <div class="time-box"><span class="time-digit" id="seconds">30</span></div>
         </div>
 
+        <!-- แถบวันที่และสัปดาห์ -->
         <div class="bottom-container">
             <div class="date-section">
+                <!-- DATE -->
                 <div class="date-field">
-                    <div class="date-box"><span class="date-digit" id="date">1</span></div>
+                    <div class="date-box"><span class="date-digit" id="date">9</span></div>
                     <span class="label">DATE</span>
                 </div>
+                <!-- MONTH -->
                 <div class="date-field">
-                    <div class="date-box"><span class="date-digit" id="month">1</span></div>
+                    <div class="date-box"><span class="date-digit" id="month">10</span></div>
                     <span class="label">MONTH</span>
                 </div>
+                <!-- YEAR -->
                 <div class="date-field">
-                    <div class="date-box year"><span class="date-digit" id="year">2026</span></div>
+                    <div class="date-box year"><span class="date-digit" id="year">2024</span></div>
                     <span class="label">YEAR</span>
                 </div>
             </div>
 
+            <!-- SUN - SAT -->
             <div class="days-container">
                 <span class="day" id="day-0">SUN</span>
                 <span class="day" id="day-1">MON</span>
