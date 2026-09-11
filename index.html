@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Wall Clock (OK-4822 Style)</title>
-    <!-- โหลดฟอนต์ตัวเลขดิจิทัล 7-Segment -->
     <link href="https://fonts.cdnfonts.com/css/vt323" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Roboto:wght@700&display=swap');
@@ -24,29 +23,30 @@
             font-family: 'Roboto', sans-serif;
         }
 
-        /* ตัวเรือนนาฬิกาหลัก (กรอบดำขอบกระจกเงา) */
+        /* ปรับความกว้างและความสูงของตัวเรือนให้กระชับขึ้น */
         .clock-body {
-            width: 780px;
-            height: 420px;
+            width: 700px;              /* เดิม 780px ลดให้ช่องแคบลง */
+            height: 350px;             /* เดิม 420px ลดระยะห่างแนวตั้ง */
             background: #000000;
             border: 4px solid #222;
             border-radius: 12px;
-            padding: 24px;
+            padding: 20px 24px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9),
                         inset 0 0 10px rgba(255, 255, 255, 0.05);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: center;    /* เปลี่ยนให้ยึดตรงกลางเพื่อคุม gap */
+            gap: 16px;                 /* คุมระยะห่างระหว่างแถวเวลากับแถววันโดยตรง */
             position: relative;
         }
 
-        /* --- ส่วนเวลาหลัก (ชั่วโมง : นาที : วินาที) --- */
+        /* --- ส่วนเวลาหลัก --- */
         .time-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 240px;
-            gap: 12px;
+            height: 190px;             /* เดิม 240px */
+            gap: 8px;                  /* เดิม 12px ช่องระหว่างกล่องเวลาแคบลง */
         }
 
         .time-box {
@@ -62,7 +62,7 @@
 
         .time-digit {
             font-family: 'Orbitron', monospace;
-            font-size: 110px;
+            font-size: 100px;          /* ปรับฟอนต์ให้สมส่วนกับกล่องที่แคบลง */
             font-weight: 900;
             color: #00aeff;
             text-shadow: 0 0 12px rgba(0, 174, 255, 0.7),
@@ -74,29 +74,30 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 30px;
+            gap: 24px;
+            padding: 0 4px;
         }
 
         .colon-dot {
-            width: 14px;
-            height: 14px;
+            width: 12px;
+            height: 12px;
             background-color: #00aeff;
             border-radius: 50%;
             box-shadow: 0 0 10px #00aeff, 0 0 20px #00aeff;
         }
 
-        /* --- ส่วนแถบด้านล่าง (วันที่, เดือน, ปี, วันในสัปดาห์) --- */
+        /* --- ส่วนแถบด้านล่าง --- */
         .bottom-container {
             display: flex;
             align-items: flex-end;
             justify-content: flex-start;
             gap: 20px;
-            height: 110px;
+            height: 85px;              /* เดิม 110px */
         }
 
         .date-section {
             display: flex;
-            gap: 12px;
+            gap: 8px;                  /* เดิม 12px ช่องไฟระหว่าง วัน/เดือน/ปี แคบลง */
         }
 
         .date-field {
@@ -107,23 +108,23 @@
 
         .date-box {
             background: #111417;
-            height: 65px;
+            height: 52px;              /* เดิม 65px */
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 0 12px;
+            padding: 0 8px;
             border-radius: 4px;
-            min-width: 65px;
+            min-width: 52px;           /* เดิม 65px ช่องวันและเดือนแคบลง */
             box-shadow: inset 0 0 8px rgba(0,0,0,0.8);
         }
 
         .date-box.year {
-            min-width: 110px;
+            min-width: 90px;           /* เดิม 110px ช่องปีแคบลง */
         }
 
         .date-digit {
             font-family: 'Orbitron', monospace;
-            font-size: 38px;
+            font-size: 30px;           /* เดิม 38px */
             font-weight: 700;
             color: #00aeff;
             text-shadow: 0 0 8px rgba(0, 174, 255, 0.6);
@@ -131,39 +132,38 @@
 
         .label {
             color: #ffffff;
-            font-size: 18px;
+            font-size: 14px;           /* เดิม 18px */
             font-weight: 700;
-            margin-top: 8px;
+            margin-top: 6px;
             letter-spacing: 1px;
         }
 
-        /* ส่วนแสดงวัน SUN MON TUE WED THU FRI SAT */
+        /* ส่วนแสดงวัน SUN - SAT */
         .days-container {
             display: flex;
-            gap: 14px;
-            margin-left: 20px;
-            margin-bottom: 35px;
+            gap: 12px;
+            margin-left: 15px;
+            margin-bottom: 26px;
         }
 
         .day {
-            font-size: 17px;
+            font-size: 15px;
             font-weight: 700;
-            color: #222d38; /* วันปกติที่ไม่ได้เปิดไฟ */
+            color: #222d38;
             letter-spacing: 1px;
         }
 
         .day.active {
-            color: #00aeff; /* วันปัจจุบัน สว่างขึ้นมา */
+            color: #00aeff;
             text-shadow: 0 0 10px rgba(0, 174, 255, 0.8);
         }
 
-        /* โลโก้รุ่นตรงมุมขวา */
         .model-number {
             position: absolute;
-            bottom: 12px;
-            right: 20px;
+            bottom: 10px;
+            right: 18px;
             color: #555;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: bold;
         }
     </style>
@@ -171,42 +171,36 @@
 <body>
 
     <div class="clock-body">
-        <!-- แสดงเวลาหลัก -->
         <div class="time-container">
-            <div class="time-box"><span class="time-digit" id="hours">10</span></div>
+            <div class="time-box"><span class="time-digit" id="hours">00</span></div>
             <div class="colon-box">
                 <div class="colon-dot"></div>
                 <div class="colon-dot"></div>
             </div>
-            <div class="time-box"><span class="time-digit" id="minutes">58</span></div>
+            <div class="time-box"><span class="time-digit" id="minutes">00</span></div>
             <div class="colon-box">
                 <div class="colon-dot"></div>
                 <div class="colon-dot"></div>
             </div>
-            <div class="time-box"><span class="time-digit" id="seconds">30</span></div>
+            <div class="time-box"><span class="time-digit" id="seconds">00</span></div>
         </div>
 
-        <!-- แสดงวันที่ และ วันในสัปดาห์ -->
         <div class="bottom-container">
             <div class="date-section">
-                <!-- DATE -->
                 <div class="date-field">
-                    <div class="date-box"><span class="date-digit" id="date">9</span></div>
+                    <div class="date-box"><span class="date-digit" id="date">1</span></div>
                     <span class="label">DATE</span>
                 </div>
-                <!-- MONTH -->
                 <div class="date-field">
-                    <div class="date-box"><span class="date-digit" id="month">10</span></div>
+                    <div class="date-box"><span class="date-digit" id="month">1</span></div>
                     <span class="label">MONTH</span>
                 </div>
-                <!-- YEAR -->
                 <div class="date-field">
-                    <div class="date-box year"><span class="date-digit" id="year">2024</span></div>
+                    <div class="date-box year"><span class="date-digit" id="year">2026</span></div>
                     <span class="label">YEAR</span>
                 </div>
             </div>
 
-            <!-- รายชื่อวัน SUN - SAT -->
             <div class="days-container">
                 <span class="day" id="day-0">SUN</span>
                 <span class="day" id="day-1">MON</span>
@@ -225,7 +219,6 @@
         function updateClock() {
             const now = new Date();
 
-            // ดึงค่า เวลา
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
@@ -234,16 +227,14 @@
             document.getElementById('minutes').innerText = minutes;
             document.getElementById('seconds').innerText = seconds;
 
-            // ดึงค่า วัน เดือน ปี
             const date = now.getDate();
-            const month = now.getMonth() + 1; // เดือนเริ่มนับจาก 0
+            const month = now.getMonth() + 1;
             const year = now.getFullYear();
 
             document.getElementById('date').innerText = date;
             document.getElementById('month').innerText = month;
             document.getElementById('year').innerText = year;
 
-            // เปิดไฟเฉพาะวันปัจจุบัน (SUN = 0, MON = 1, ...)
             const currentDay = now.getDay();
             for (let i = 0; i < 7; i++) {
                 const dayElement = document.getElementById(`day-${i}`);
@@ -255,7 +246,6 @@
             }
         }
 
-        // อัปเดตเวลาทุกๆ 1 วินาที
         setInterval(updateClock, 1000);
         updateClock();
     </script>
